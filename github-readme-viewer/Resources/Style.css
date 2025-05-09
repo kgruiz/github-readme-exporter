@@ -3,7 +3,6 @@
     -webkit-user-select: none;
     user-select: none;
     -webkit-user-drag: none;
-    user-drag: none;
 }
 
 :root {
@@ -13,34 +12,35 @@
         'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
         'Helvetica Neue', sans-serif;
 
-    --app-bg-dark: transparent;
-    --container-bg-dark: rgba(35, 35, 35, 0.75);
-    --container-border-dark: rgba(255, 255, 255, 0.08);
-    --text-primary-dark: rgba(255, 255, 255, 0.95);
-    --text-secondary-dark: rgba(255, 255, 255, 0.7);
-    --button-bg-dark: rgba(0, 122, 255, 0.9);
-    --button-bg-hover-dark: rgba(10, 132, 255, 1);
-    --button-text-dark: #ffffff;
-    --shadow-color-dark: rgba(0, 0, 0, 0.35);
+    --app-bg: transparent;
 
-    --app-bg-light: #f3f3f3;
-    --container-bg-light: rgba(252, 252, 252, 0.88);
-    --container-border-light: rgba(0, 0, 0, 0.09);
-    --text-primary-light: rgba(0, 0, 0, 0.9);
-    --text-secondary-light: rgba(0, 0, 0, 0.68);
+    /* Dark Mode Glass & Text */
+    --container-bg-dark: rgba(30, 30, 30, 0.6);
+    --container-border-dark: rgba(255, 255, 255, 0.09);
+    --text-primary-dark: rgba(255, 255, 255, 0.97);
+    --text-secondary-dark: rgba(255, 255, 255, 0.78);
+    --button-bg-dark: rgba(0, 122, 255, 0.8);
+    --button-bg-hover-dark: rgba(10, 132, 255, 0.9);
+    --button-text-dark: #ffffff;
+    --shadow-color-dark: rgba(0, 0, 0, 0.45);
+
+    /* Light Mode Glass & Text */
+    --container-bg-light: rgba(252, 252, 252, 0.75);
+    --container-border-light: rgba(0, 0, 0, 0.11);
+    --text-primary-light: rgba(0, 0, 0, 0.94);
+    --text-secondary-light: rgba(0, 0, 0, 0.72);
     --button-bg-light: #007aff;
     --button-bg-hover-light: #0071e6;
     --button-text-light: #ffffff;
-    --shadow-color-light: rgba(0, 0, 0, 0.1);
+    --shadow-color-light: rgba(0, 0, 0, 0.14);
 
-    --radius-container: 18px;
-    --radius-button: 9px;
-    --spacing-base: 22px;
+    --radius-container: 22px;
+    --radius-button: 11px;
+    --spacing-base: 26px;
 }
 
 @media (prefers-color-scheme: light) {
     :root {
-        --current-app-bg: var(--app-bg-light);
         --current-container-bg: var(--container-bg-light);
         --current-container-border: var(--container-border-light);
         --current-text-primary: var(--text-primary-light);
@@ -54,7 +54,6 @@
 
 @media (prefers-color-scheme: dark) {
     :root {
-        --current-app-bg: var(--app-bg-dark);
         --current-container-bg: var(--container-bg-dark);
         --current-container-border: var(--container-border-dark);
         --current-text-primary: var(--text-primary-dark);
@@ -62,7 +61,7 @@
         --current-button-bg: var(--button-bg-dark);
         --current-button-bg-hover: var(--button-bg-hover-dark);
         --current-button-text: var(--button-text-dark);
-        --current-shadow-color: var(--current-shadow-color);
+        --current-shadow-color: var(--shadow-color-dark);
     }
 }
 
@@ -77,56 +76,57 @@ body {
     justify-content: center;
     min-height: 100%;
     margin: 0;
-    padding: var(--spacing-base);
-    background-color: var(--current-app-bg);
-    transition: background-color 0.3s ease-in-out;
+    padding: calc(var(--spacing-base) * 1.8);
+    background-color: var(--app-bg);
 }
 
 .app-container {
     background-color: var(--current-container-bg);
-    backdrop-filter: blur(28px) saturate(170%);
-    -webkit-backdrop-filter: blur(28px) saturate(170%);
+    backdrop-filter: blur(40px) saturate(150%) brightness(1.1);
+    -webkit-backdrop-filter: blur(40px) saturate(150%) brightness(1.1);
 
     border-radius: var(--radius-container);
     border: 1px solid var(--current-container-border);
-    box-shadow: 0 14px 40px -8px var(--current-shadow-color),
-        0 1px 2px var(--current-container-border);
+    box-shadow: 0 22px 60px -12px var(--current-shadow-color),
+        0 2px 5px var(--current-container-border);
 
-    padding: calc(var(--spacing-base) * 1.5) calc(var(--spacing-base) * 1.25);
-    max-width: 410px;
+    padding: calc(var(--spacing-base) * 2) calc(var(--spacing-base) * 1.6);
+    max-width: 600px;
+    min-height: 420px;
     width: 100%;
 
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     text-align: center;
-    gap: calc(var(--spacing-base) * 0.75);
+    gap: calc(var(--spacing-base) * 0.9);
     transition: background-color 0.3s ease-in-out, border-color 0.3s ease-in-out,
         box-shadow 0.3s ease-in-out;
 }
 
 .app-icon {
-    width: 70px;
-    height: 70px;
+    width: 85px;
+    height: 85px;
     object-fit: contain;
-    margin-bottom: calc(var(--spacing-base) * 0.2);
+    margin-bottom: calc(var(--spacing-base) * 0.3);
 }
 
 .app-title {
-    font-size: 1.3em;
+    font-size: 1.55em;
     font-weight: 600;
     color: var(--current-text-primary);
-    margin: 0 0 calc(var(--spacing-base) * 0.45) 0;
-    letter-spacing: 0.015em;
+    margin: 0 0 calc(var(--spacing-base) * 0.55) 0;
+    letter-spacing: 0.005em;
     transition: color 0.3s ease-in-out;
 }
 
 .message-area p {
-    font-size: 0.94em;
-    line-height: 1.68;
+    font-size: 1.05em;
+    line-height: 1.75;
     color: var(--current-text-secondary);
-    margin: 0 auto calc(var(--spacing-base) * 0.5) auto;
-    max-width: 92%;
+    margin: 0 auto calc(var(--spacing-base) * 0.65) auto;
+    max-width: 88%;
     transition: color 0.3s ease-in-out;
 }
 
@@ -158,26 +158,26 @@ body.state-off .app-container .message-area :is(.state-on, .state-unknown) {
     background-color: var(--current-button-bg);
     color: var(--current-button-text);
     border: none;
-    padding: 10px 24px;
+    padding: 13px 30px;
     border-radius: var(--radius-button);
-    font-size: 0.9em;
+    font-size: 1em;
     font-weight: 500;
     cursor: pointer;
     transition: background-color 0.12s ease-out, transform 0.1s ease-out,
         box-shadow 0.12s ease-out;
-    min-width: 230px;
-    margin-top: calc(var(--spacing-base) * 0.5);
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+    min-width: 280px;
+    margin-top: calc(var(--spacing-base) * 0.65);
+    box-shadow: 0 3px 9px rgba(0, 0, 0, 0.08);
 }
 
 .modern-button:hover {
     background-color: var(--current-button-bg-hover);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+    transform: translateY(-2.5px);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.12);
 }
 
 .modern-button:active {
-    transform: translateY(0px) scale(0.985);
+    transform: translateY(-0.5px) scale(0.98);
     background-color: var(--current-button-bg);
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 2px 7px rgba(0, 0, 0, 0.08);
 }
