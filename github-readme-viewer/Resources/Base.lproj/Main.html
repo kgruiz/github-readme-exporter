@@ -1,19 +1,21 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'">
-
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline';">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-
     <link rel="stylesheet" href="../Style.css">
     <script src="../Script.js" defer></script>
 </head>
 <body>
-    <img src="../Icon.png" width="128" height="128" alt="github-readme-viewer Icon">
-    <p class="state-unknown">You can turn on github-readme-viewer’s extension in Safari Extensions preferences.</p>
-    <p class="state-on">github-readme-viewer’s extension is currently on. You can turn it off in Safari Extensions preferences.</p>
-    <p class="state-off">github-readme-viewer’s extension is currently off. You can turn it on in Safari Extensions preferences.</p>
-    <button class="open-preferences">Quit and Open Safari Extensions Preferences…</button>
+    <div class="glass-container">
+        <img src="../Icon.png" width="100" height="100" alt="Icon" class="app-icon">
+        <div class="message-area">
+            <p class="state-unknown">To use <strong>github-readme-viewer</strong>, please enable its extension in Safari Extensions preferences.</p>
+            <p class="state-on"><strong>github-readme-viewer</strong> is <strong>on</strong>. Manage in Safari Extensions preferences.</p>
+            <p class="state-off"><strong>github-readme-viewer</strong> is <strong>off</strong>. Enable in Safari Extensions preferences.</p>
+        </div>
+        <button class="open-preferences modern-button">Quit and Open Safari Extensions Preferences…</button>
+    </div>
 </body>
 </html>
