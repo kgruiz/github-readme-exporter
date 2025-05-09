@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>GitHub README</title>
+    <link rel="stylesheet" type="text/css" href="popup.css">
+</head>
+<body>
+    <div id="container">
+        <h1>GitHub README</h1>
+        <div id="repo-info">
+            <p>Repo: <span id="repo-name">Loading...</span></p>
+        </div>
+        <div id="actions">
+            <button id="copyContentBtn" disabled>Copy Content</button>
+            <button id="copyFileBtn" disabled>Copy File to Clipboard</button>
+            <button id="downloadBtn" disabled>Download README</button>
+        </div>
+        <div id="status"></div>
+        <pre id="readme-content">Loading README...</pre>
+    </div>
+    <script src="popup.js"></script>
+</body>
+</html>
