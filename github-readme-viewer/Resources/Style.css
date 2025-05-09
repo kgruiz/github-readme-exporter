@@ -17,29 +17,62 @@
 
     --app-bg: transparent;
 
+    /* Logo Colors */
+    --logo-blue-bright: #006eff;
+    --logo-blue-dark: #114283;
+    --logo-gray: #4b5563;
+
+    /* Glass Effect */
     --glass-blur: 60px;
-    --glass-saturate: 190%;
-    --glass-brightness: 1.05;
+    --glass-saturate: 180%; /* Slightly reduced from 190% if colors get too intense */
+    --glass-brightness: 1; /* Neutral brightness, let logo colors shine */
 
-    --container-bg-dark: rgba(28, 28, 30, 0.7);
-    --container-border-dark: rgba(255, 255, 255, 0.15);
+    /* Dark Mode - Adapted to Logo */
+    --container-bg-dark: rgba(
+        28,
+        28,
+        30,
+        0.75
+    ); /* Kept fairly neutral to let button pop */
+    --container-border-dark: rgba(255, 255, 255, 0.12);
     --text-primary-dark: rgba(255, 255, 255, 0.98);
-    --text-secondary-dark: rgba(235, 235, 245, 0.7);
-    --button-bg-dark: rgba(0, 122, 255, 0.85);
-    --button-bg-hover-dark: rgba(30, 132, 255, 0.95);
+    --text-secondary-dark: rgba(
+        235,
+        235,
+        245,
+        0.75
+    ); /* Slightly brighter secondary */
+    --button-bg-dark: var(--logo-blue-bright); /* LOGO COLOR */
+    --button-bg-hover-dark: #007bff; /* Brighter variant of logo blue */
     --button-text-dark: #ffffff;
-    --button-highlight-dark: rgba(255, 255, 255, 0.1);
-    --shadow-color-dark: rgba(0, 0, 0, 0.5);
+    --button-highlight-dark: rgba(
+        255,
+        255,
+        255,
+        0.15
+    ); /* Slightly more highlight */
+    --shadow-color-dark: rgba(0, 0, 0, 0.45);
 
-    --container-bg-light: rgba(249, 249, 251, 0.75);
-    --container-border-light: rgba(0, 0, 0, 0.08);
+    /* Light Mode - Adapted to Logo */
+    --container-bg-light: rgba(249, 249, 251, 0.8); /* Kept fairly neutral */
+    --container-border-light: rgba(0, 0, 0, 0.1);
     --text-primary-light: rgba(0, 0, 0, 0.95);
-    --text-secondary-light: rgba(60, 60, 67, 0.75);
-    --button-bg-light: #007aff;
-    --button-bg-hover-light: #0071e6;
+    --text-secondary-light: rgba(
+        60,
+        60,
+        67,
+        0.8
+    ); /* Slightly brighter secondary */
+    --button-bg-light: var(--logo-blue-bright); /* LOGO COLOR */
+    --button-bg-hover-light: #005cbf; /* Darker variant for light mode hover */
     --button-text-light: #ffffff;
-    --button-highlight-light: rgba(255, 255, 255, 0.25);
-    --shadow-color-light: rgba(0, 0, 0, 0.16);
+    --button-highlight-light: rgba(
+        255,
+        255,
+        255,
+        0.3
+    ); /* Slightly more highlight */
+    --shadow-color-light: rgba(0, 0, 0, 0.15);
 
     --radius-container: 28px;
     --radius-button: 18px;
@@ -68,7 +101,9 @@
         --current-container-border: var(--container-border-dark);
         --current-text-primary: var(--text-primary-dark);
         --current-text-secondary: var(--text-secondary-dark);
-        --current-button-bg: var(--current-button-bg-dark);
+        --current-button-bg: var(
+            --button-bg-dark
+        ); /* Corrected: was --current-button-bg-dark */
         --current-button-bg-hover: var(--button-bg-hover-dark);
         --current-button-text: var(--button-text-dark);
         --current-button-highlight: var(--button-highlight-dark);
@@ -92,14 +127,15 @@ body {
     padding: calc(var(--spacing-base) * 1.5);
     background-color: var(--app-bg);
     background-image: radial-gradient(
-            circle at 10% 10%,
-            hsla(220, 50%, 70%, 0.15),
-            transparent 50%
+            /* Adapted to logo color hints */ circle at 10% 10%,
+            hsla(217, 100%, 60%, 0.1),
+            /* Corresponds to #006eff HSL(217, 100%, 50%) */ transparent 50%
         ),
         radial-gradient(
             circle at 90% 80%,
-            hsla(340, 50%, 70%, 0.15),
-            transparent 50%
+            hsla(217, 80%, 30%, 0.1),
+            /* Corresponds to #114283 HSL(217, 78%, 29%) - darker blue */
+                transparent 50%
         );
     background-attachment: fixed;
 }
@@ -117,7 +153,7 @@ body {
     box-shadow: 0 20px 40px -10px var(--current-shadow-color),
         0 0 0 0.5px var(--current-container-border),
         inset 0 0.5px 0px hsla(0, 0%, 100%, 0.15),
-        inset 0 -0.5px 0px hsla(0, 0%, 0%, 0.03);
+        /* General light inner highlight */ inset 0 -0.5px 0px hsla(0, 0%, 0%, 0.03); /* General dark inner shadow */
 
     padding: calc(var(--spacing-base) * 1.8) calc(var(--spacing-base) * 1.8);
     max-width: 580px;
@@ -136,9 +172,10 @@ body {
 
 @media (prefers-color-scheme: dark) {
     .app-container {
+        /* Specific dark mode inset highlight */
         box-shadow: 0 20px 40px -10px var(--current-shadow-color),
             0 0 0 0.5px var(--current-container-border),
-            inset 0 0.5px 0px hsla(0, 0%, 100%, 0.07);
+            inset 0 0.5px 0px hsla(0, 0%, 100%, 0.07); /* Kept this detail from your original */
     }
 }
 
@@ -153,7 +190,9 @@ body {
 .app-title {
     font-size: 1.7em;
     font-weight: 600;
-    color: var(--current-text-primary);
+    color: var(
+        --current-text-primary
+    ); /* Could consider var(--logo-blue-dark) for dark mode title */
     margin: 0 0 calc(var(--spacing-base) * 0.45) 0;
     letter-spacing: -0.015em;
     transition: color 0.3s ease-in-out;
@@ -174,10 +213,13 @@ body {
 }
 
 .message-area strong {
-    color: var(--current-text-primary);
+    color: var(
+        --current-text-primary
+    ); /* Could consider var(--logo-blue-bright) or var(--logo-gray) for strong emphasis */
     font-weight: 500;
 }
 
+/* ... (state visibility rules remain the same) ... */
 body:not(.state-on, .state-off)
     .app-container
     .message-area
@@ -225,6 +267,7 @@ body.state-off .app-container .message-area :is(.state-on, .state-unknown) {
 
 .modern-button:active {
     transform: translateY(0px) scale(0.98);
+    /* Keep active state same as base or slightly darker than base but not hover */
     background-color: var(--current-button-bg);
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06),
         0 2px 4px -1px var(--current-shadow-color),
