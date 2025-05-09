@@ -1,124 +1,183 @@
 * {
     box-sizing: border-box;
     -webkit-user-select: none;
+    user-select: none;
     -webkit-user-drag: none;
+    user-drag: none;
 }
 
 :root {
     color-scheme: light dark;
-    --spacing-small: 10px;
-    --spacing-medium: 20px;
-    --spacing-large: 30px;
-    --border-radius-medium: 12px;
-    --border-radius-large: 20px;
 
-    --app-background-image: linear-gradient(135deg, #6dd5ed 0%, #2193b0 100%);
-    --glass-bg-color: rgba(255, 255, 255, 0.15);
-    --glass-border-color: rgba(255, 255, 255, 0.25);
-    --text-color: #333;
-    --text-color-strong: #000;
-    --button-bg-color: rgba(255, 255, 255, 0.3);
-    --button-text-color: #004085;
-    --button-hover-bg-color: rgba(255, 255, 255, 0.5);
-    --shadow-color: rgba(31, 38, 135, 0.2);
+    --system-font: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto',
+        'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
+        'Helvetica Neue', sans-serif;
+
+    --app-bg-dark: transparent;
+    --container-bg-dark: rgba(35, 35, 35, 0.75);
+    --container-border-dark: rgba(255, 255, 255, 0.08);
+    --text-primary-dark: rgba(255, 255, 255, 0.95);
+    --text-secondary-dark: rgba(255, 255, 255, 0.7);
+    --button-bg-dark: rgba(0, 122, 255, 0.9);
+    --button-bg-hover-dark: rgba(10, 132, 255, 1);
+    --button-text-dark: #ffffff;
+    --shadow-color-dark: rgba(0, 0, 0, 0.35);
+
+    --app-bg-light: #f3f3f3;
+    --container-bg-light: rgba(252, 252, 252, 0.88);
+    --container-border-light: rgba(0, 0, 0, 0.09);
+    --text-primary-light: rgba(0, 0, 0, 0.9);
+    --text-secondary-light: rgba(0, 0, 0, 0.68);
+    --button-bg-light: #007aff;
+    --button-bg-hover-light: #0071e6;
+    --button-text-light: #ffffff;
+    --shadow-color-light: rgba(0, 0, 0, 0.1);
+
+    --radius-container: 18px;
+    --radius-button: 9px;
+    --spacing-base: 22px;
+}
+
+@media (prefers-color-scheme: light) {
+    :root {
+        --current-app-bg: var(--app-bg-light);
+        --current-container-bg: var(--container-bg-light);
+        --current-container-border: var(--container-border-light);
+        --current-text-primary: var(--text-primary-light);
+        --current-text-secondary: var(--text-secondary-light);
+        --current-button-bg: var(--button-bg-light);
+        --current-button-bg-hover: var(--button-bg-hover-light);
+        --current-button-text: var(--button-text-light);
+        --current-shadow-color: var(--shadow-color-light);
+    }
 }
 
 @media (prefers-color-scheme: dark) {
     :root {
-        --app-background-image: linear-gradient(135deg, #232526 0%, #414345 100%);
-        --glass-bg-color: rgba(0, 0, 0, 0.2);
-        --glass-border-color: rgba(255, 255, 255, 0.1);
-        --text-color: #f0f0f0;
-        --text-color-strong: #fff;
-        --button-bg-color: rgba(0, 0, 0, 0.3);
-        --button-text-color: #ade0ff;
-        --button-hover-bg-color: rgba(0, 0, 0, 0.5);
-        --shadow-color: rgba(0, 0, 0, 0.3);
+        --current-app-bg: var(--app-bg-dark);
+        --current-container-bg: var(--container-bg-dark);
+        --current-container-border: var(--container-border-dark);
+        --current-text-primary: var(--text-primary-dark);
+        --current-text-secondary: var(--text-secondary-dark);
+        --current-button-bg: var(--button-bg-dark);
+        --current-button-bg-hover: var(--button-bg-hover-dark);
+        --current-button-text: var(--button-text-dark);
+        --current-shadow-color: var(--current-shadow-color);
     }
 }
 
 html {
     height: 100%;
+    font-family: var(--system-font);
 }
 
 body {
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-direction: column;
-    margin: 0;
     min-height: 100%;
-    padding: var(--spacing-medium);
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji";
-    text-align: center;
-    background-image: var(--app-background-image);
-    background-attachment: fixed;
-    background-size: cover;
-    color: var(--text-color);
-    transition: background-color 0.3s ease, color 0.3s ease;
+    margin: 0;
+    padding: var(--spacing-base);
+    background-color: var(--current-app-bg);
+    transition: background-color 0.3s ease-in-out;
 }
 
-.glass-container {
-    background-color: var(--glass-bg-color);
-    backdrop-filter: blur(15px) saturate(150%);
-    -webkit-backdrop-filter: blur(15px) saturate(150%);
-    padding: var(--spacing-large);
-    border-radius: var(--border-radius-large);
-    border: 1px solid var(--glass-border-color);
-    box-shadow: 0 8px 32px 0 var(--shadow-color);
-    max-width: 500px;
-    width: 90%;
+.app-container {
+    background-color: var(--current-container-bg);
+    backdrop-filter: blur(28px) saturate(170%);
+    -webkit-backdrop-filter: blur(28px) saturate(170%);
+
+    border-radius: var(--radius-container);
+    border: 1px solid var(--current-container-border);
+    box-shadow: 0 14px 40px -8px var(--current-shadow-color),
+        0 1px 2px var(--current-container-border);
+
+    padding: calc(var(--spacing-base) * 1.5) calc(var(--spacing-base) * 1.25);
+    max-width: 410px;
+    width: 100%;
+
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: var(--spacing-medium);
+    text-align: center;
+    gap: calc(var(--spacing-base) * 0.75);
+    transition: background-color 0.3s ease-in-out, border-color 0.3s ease-in-out,
+        box-shadow 0.3s ease-in-out;
 }
 
 .app-icon {
-    width: 90px;
-    height: 90px;
-    border-radius: var(--border-radius-medium);
+    width: 70px;
+    height: 70px;
     object-fit: contain;
-    margin-bottom: var(--spacing-small);
+    margin-bottom: calc(var(--spacing-base) * 0.2);
+}
+
+.app-title {
+    font-size: 1.3em;
+    font-weight: 600;
+    color: var(--current-text-primary);
+    margin: 0 0 calc(var(--spacing-base) * 0.45) 0;
+    letter-spacing: 0.015em;
+    transition: color 0.3s ease-in-out;
 }
 
 .message-area p {
-    margin: var(--spacing-small) 0;
-    font-size: 1em;
-    line-height: 1.6;
-    color: var(--text-color);
+    font-size: 0.94em;
+    line-height: 1.68;
+    color: var(--current-text-secondary);
+    margin: 0 auto calc(var(--spacing-base) * 0.5) auto;
+    max-width: 92%;
+    transition: color 0.3s ease-in-out;
 }
 
-.message-area p strong {
-    color: var(--text-color-strong);
-    font-weight: 600;
+.message-area p:last-child {
+    margin-bottom: 0;
 }
 
-body:not(.state-on, .state-off) .glass-container :is(.state-on, .state-off),
-body.state-on .glass-container :is(.state-off, .state-unknown),
-body.state-off .glass-container :is(.state-on, .state-unknown) {
+.message-area strong {
+    color: var(--current-text-primary);
+    font-weight: 500;
+}
+
+body:not(.state-on, .state-off)
+    .app-container
+    .message-area
+    :is(.state-on, .state-off) {
+    display: none;
+}
+
+body.state-on .app-container .message-area :is(.state-off, .state-unknown) {
+    display: none;
+}
+
+body.state-off .app-container .message-area :is(.state-on, .state-unknown) {
     display: none;
 }
 
 .modern-button {
-    background-color: var(--button-bg-color);
-    color: var(--button-text-color);
+    background-color: var(--current-button-bg);
+    color: var(--current-button-text);
     border: none;
-    padding: 12px 24px;
-    border-radius: var(--border-radius-medium);
-    font-size: 0.95em;
+    padding: 10px 24px;
+    border-radius: var(--radius-button);
+    font-size: 0.9em;
     font-weight: 500;
     cursor: pointer;
-    transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out;
-    text-decoration: none;
-    margin-top: var(--spacing-small);
+    transition: background-color 0.12s ease-out, transform 0.1s ease-out,
+        box-shadow 0.12s ease-out;
+    min-width: 230px;
+    margin-top: calc(var(--spacing-base) * 0.5);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
 }
 
 .modern-button:hover {
-    background-color: var(--button-hover-bg-color);
-    transform: translateY(-2px);
+    background-color: var(--current-button-bg-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
 }
 
 .modern-button:active {
-    transform: translateY(0);
+    transform: translateY(0px) scale(0.985);
+    background-color: var(--current-button-bg);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
 }
