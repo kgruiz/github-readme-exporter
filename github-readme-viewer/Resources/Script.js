@@ -1,12 +1,16 @@
 function show(enabled, useSettingsInsteadOfPreferences) {
     if (useSettingsInsteadOfPreferences) {
-        document.getElementsByClassName('state-on')[0].innerText = "github-readme-viewer’s extension is currently on. You can turn it off in the Extensions section of Safari Settings.";
-        document.getElementsByClassName('state-off')[0].innerText = "github-readme-viewer’s extension is currently off. You can turn it on in the Extensions section of Safari Settings.";
-        document.getElementsByClassName('state-unknown')[0].innerText = "You can turn on github-readme-viewer’s extension in the Extensions section of Safari Settings.";
-        document.getElementsByClassName('open-preferences')[0].innerText = "Quit and Open Safari Settings…";
+        document.getElementsByClassName('state-on')[0].innerText =
+            'GitHub README Viewer’s extension is currently on. You can turn it off in the Extensions section of Safari Settings.';
+        document.getElementsByClassName('state-off')[0].innerText =
+            'GitHub README Viewer’s extension is currently off. You can turn it on in the Extensions section of Safari Settings.';
+        document.getElementsByClassName('state-unknown')[0].innerText =
+            'You can turn on GitHub README Viewer’s extension in the Extensions section of Safari Settings.';
+        document.getElementsByClassName('open-preferences')[0].innerText =
+            'Quit and Open Safari Settings…'; // Ensure no " test"
     }
 
-    if (typeof enabled === "boolean") {
+    if (typeof enabled === 'boolean') {
         document.body.classList.toggle(`state-on`, enabled);
         document.body.classList.toggle(`state-off`, !enabled);
     } else {
@@ -16,7 +20,9 @@ function show(enabled, useSettingsInsteadOfPreferences) {
 }
 
 function openPreferences() {
-    webkit.messageHandlers.controller.postMessage("open-preferences");
+    webkit.messageHandlers.controller.postMessage('open-preferences');
 }
 
-document.querySelector("button.open-preferences").addEventListener("click", openPreferences);
+document
+    .querySelector('button.open-preferences')
+    .addEventListener('click', openPreferences);
