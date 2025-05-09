@@ -1,15 +1,20 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-    <!-- Base Document (from Icon 1) -->
-    <path
+<svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 28 28" fill="currentColor">
+
+    <!-- file -->
+    <path fill-rule="evenodd"
         d="M3 3a2 2 0 0 1 2-2h9.982a2 2 0 0 1 1.414.586l4.018 4.018A2 2 0 0 1 21 7.018V21a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Zm2-.5a.5.5 0 0 0-.5.5v18a.5.5 0 0 0 .5.5h14a.5.5 0 0 0 .5-.5V8.5h-4a2 2 0 0 1-2-2v-4Zm10 0v4a.5.5 0 0 0 .5.5h4a.5.5 0 0 0-.146-.336l-4.018-4.018A.5.5 0 0 0 15 2.5Z" />
 
-    <!-- Fork/Share Symbol Overlay (inspired by Icon 2, simplified and centered on document face) -->
-    <!-- Vertical connecting bar -->
-    <path d="M8.75 11.5h1.5v5h-1.5z" />
-    <!-- Horizontal connecting bar to the side node -->
-    <path d="M9.5 13.25h5v1.5h-5z" />
-    <!-- Nodes (circles) -->
-    <circle cx="9.5" cy="11.5" r="1.5" />
-    <circle cx="9.5" cy="16.5" r="1.5" />
-    <circle cx="14.5" cy="14" r="1.5" />
+    <!-- markdown logo -->
+    <g transform="translate(6.6 9.6) scale(0.45)">
+        <path
+            d="M22.289 4.5A1.71 1.71 0 0 1 24 6.226v11.557c0 .946-.766 1.726-1.726 1.726H1.726A1.74 1.74 0 0 1 0 17.768V6.226C0 5.28.78 4.5 1.726 4.5Zm-8.781 12.007V7.501h-3.002l-2.251 3.002-2.252-3.002H3.002v9.006h3.001v-4.503l2.252 2.882 2.251-2.882v4.503Zm4.489.75 3.767-5.253h-2.251V7.501h-3.002v4.503h-2.252Z" />
+    </g>
+
+    <!-- share icon -->
+    <g transform="translate(14.5 16.5) scale(0.5)">
+        <path fill-rule="evenodd"
+            d="M5.5 9.75v10.5c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25V9.75a.25.25 0 0 0-.25-.25h-2.5a.75.75 0 0 1 0-1.5h2.5c.966 0 1.75.784 1.75 1.75v10.5A1.75 1.75 0 0 1 18.25 22H5.75A1.75 1.75 0 0 1 4 20.25V9.75C4 8.784 4.784 8 5.75 8h2.5a.75.75 0 0 1 0 1.5h-2.5a.25.25 0 0 0-.25.25Z" />
+        <path
+            d="M12.53.22l3.25 3.25a.749.749 0 0 1-.326 1.275.749.749 0 0 1-.734-.215l-1.97-1.97v10.69a.75.75 0 0 1-1.5 0V3.56L9.28 5.53a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042l3.25-3.25a.75.75 0 0 1 1.06 0Z" />
+    </g>
 </svg>
