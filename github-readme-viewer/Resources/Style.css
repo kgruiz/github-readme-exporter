@@ -14,9 +14,19 @@
 
     --app-bg: transparent;
 
-    /* Dark Mode Glass & Text */
-    --container-bg-dark: rgba(30, 30, 30, 0.6);
-    --container-border-dark: rgba(255, 255, 255, 0.09);
+    /* Dark Mode Glass & Text - Refined Glass */
+    --container-bg-dark: rgba(
+        35,
+        35,
+        37,
+        0.55
+    ); /* Slightly more translucent base, subtle hue shift */
+    --container-border-dark: rgba(
+        255,
+        255,
+        255,
+        0.12
+    ); /* Slightly more defined border */
     --text-primary-dark: rgba(255, 255, 255, 0.97);
     --text-secondary-dark: rgba(255, 255, 255, 0.78);
     --button-bg-dark: rgba(0, 122, 255, 0.8);
@@ -24,9 +34,19 @@
     --button-text-dark: #ffffff;
     --shadow-color-dark: rgba(0, 0, 0, 0.45);
 
-    /* Light Mode Glass & Text */
-    --container-bg-light: rgba(252, 252, 252, 0.75);
-    --container-border-light: rgba(0, 0, 0, 0.11);
+    /* Light Mode Glass & Text - Refined Glass */
+    --container-bg-light: rgba(
+        248,
+        248,
+        250,
+        0.7
+    ); /* More translucent, slightly off-white base */
+    --container-border-light: rgba(
+        0,
+        0,
+        0,
+        0.13
+    ); /* Slightly more defined border */
     --text-primary-light: rgba(0, 0, 0, 0.94);
     --text-secondary-light: rgba(0, 0, 0, 0.72);
     --button-bg-light: #007aff;
@@ -82,8 +102,9 @@ body {
 
 .app-container {
     background-color: var(--current-container-bg);
-    backdrop-filter: blur(40px) saturate(150%) brightness(1.1);
-    -webkit-backdrop-filter: blur(40px) saturate(150%) brightness(1.1);
+    /* REFINED BACKDROP-FILTER */
+    backdrop-filter: blur(45px) saturate(170%) brightness(1);
+    -webkit-backdrop-filter: blur(45px) saturate(170%) brightness(1);
 
     border-radius: var(--radius-container);
     border: 1px solid var(--current-container-border);
