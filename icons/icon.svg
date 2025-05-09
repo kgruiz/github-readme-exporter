@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+    <!-- Base Document (from Icon 1) -->
+    <path
+        d="M3 3a2 2 0 0 1 2-2h9.982a2 2 0 0 1 1.414.586l4.018 4.018A2 2 0 0 1 21 7.018V21a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Zm2-.5a.5.5 0 0 0-.5.5v18a.5.5 0 0 0 .5.5h14a.5.5 0 0 0 .5-.5V8.5h-4a2 2 0 0 1-2-2v-4Zm10 0v4a.5.5 0 0 0 .5.5h4a.5.5 0 0 0-.146-.336l-4.018-4.018A.5.5 0 0 0 15 2.5Z" />
+
+    <!-- Fork/Share Symbol Overlay (inspired by Icon 2, simplified and centered on document face) -->
+    <!-- Vertical connecting bar -->
+    <path d="M8.75 11.5h1.5v5h-1.5z" />
+    <!-- Horizontal connecting bar to the side node -->
+    <path d="M9.5 13.25h5v1.5h-5z" />
+    <!-- Nodes (circles) -->
+    <circle cx="9.5" cy="11.5" r="1.5" />
+    <circle cx="9.5" cy="16.5" r="1.5" />
+    <circle cx="14.5" cy="14" r="1.5" />
+</svg>

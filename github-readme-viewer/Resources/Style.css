@@ -36,7 +36,7 @@
 
     --radius-container: 22px;
     --radius-button: 11px;
-    --spacing-base: 26px;
+    --spacing-base: 24px;
 }
 
 @media (prefers-color-scheme: light) {
@@ -76,7 +76,7 @@ body {
     justify-content: center;
     min-height: 100%;
     margin: 0;
-    padding: calc(var(--spacing-base) * 1.8);
+    padding: calc(var(--spacing-base) * 1.2);
     background-color: var(--app-bg);
 }
 
@@ -90,9 +90,9 @@ body {
     box-shadow: 0 22px 60px -12px var(--current-shadow-color),
         0 2px 5px var(--current-container-border);
 
-    padding: calc(var(--spacing-base) * 2) calc(var(--spacing-base) * 1.6);
+    padding: calc(var(--spacing-base) * 1.6) calc(var(--spacing-base) * 1.6);
     max-width: 600px;
-    min-height: 420px;
+    min-height: 430px;
     width: 100%;
 
     display: flex;
@@ -100,33 +100,33 @@ body {
     align-items: center;
     justify-content: center;
     text-align: center;
-    gap: calc(var(--spacing-base) * 0.9);
+    gap: calc(var(--spacing-base) * 0.75);
     transition: background-color 0.3s ease-in-out, border-color 0.3s ease-in-out,
         box-shadow 0.3s ease-in-out;
 }
 
 .app-icon {
-    width: 85px;
-    height: 85px;
+    width: 80px;
+    height: 80px;
     object-fit: contain;
-    margin-bottom: calc(var(--spacing-base) * 0.3);
+    margin-bottom: calc(var(--spacing-base) * 0.15);
 }
 
 .app-title {
-    font-size: 1.55em;
+    font-size: 1.5em;
     font-weight: 600;
     color: var(--current-text-primary);
-    margin: 0 0 calc(var(--spacing-base) * 0.55) 0;
+    margin: 0 0 calc(var(--spacing-base) * 0.4) 0;
     letter-spacing: 0.005em;
     transition: color 0.3s ease-in-out;
 }
 
 .message-area p {
-    font-size: 1.05em;
-    line-height: 1.75;
+    font-size: 1em;
+    line-height: 1.7;
     color: var(--current-text-secondary);
-    margin: 0 auto calc(var(--spacing-base) * 0.65) auto;
-    max-width: 88%;
+    margin: 0 auto calc(var(--spacing-base) * 0.5) auto;
+    max-width: 90%;
     transition: color 0.3s ease-in-out;
 }
 
@@ -158,15 +158,15 @@ body.state-off .app-container .message-area :is(.state-on, .state-unknown) {
     background-color: var(--current-button-bg);
     color: var(--current-button-text);
     border: none;
-    padding: 13px 30px;
+    padding: 12px 28px;
     border-radius: var(--radius-button);
-    font-size: 1em;
+    font-size: 0.95em;
     font-weight: 500;
     cursor: pointer;
     transition: background-color 0.12s ease-out, transform 0.1s ease-out,
         box-shadow 0.12s ease-out;
-    min-width: 280px;
-    margin-top: calc(var(--spacing-base) * 0.65);
+    min-width: 270px;
+    margin-top: calc(var(--spacing-base) * 0.5);
     box-shadow: 0 3px 9px rgba(0, 0, 0, 0.08);
 }
 
