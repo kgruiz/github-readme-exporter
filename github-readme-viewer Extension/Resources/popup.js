@@ -1,15 +1,25 @@
 document.addEventListener('DOMContentLoaded', () => {
     const containerEl = document.getElementById('container');
     const repoNameEl = document.getElementById('repo-name');
-    const readmeContentEl = document.getElementById('readme-content');
+    const readmeContentEl = document.getElementById('readme-content'); // Raw text view <pre>
+    const readmeRenderedHtmlEl = document.getElementById(
+        'readme-rendered-html'
+    ); // Rendered HTML view <div>
     const mainContentEl = document.getElementById('main-content');
     const copyContentBtn = document.getElementById('copyContentBtn');
-    const copyFileBtn = document.getElementById('copyFileBtn'); // Still get ref for disabling
-    const downloadBtn = document.getElementById('downloadBtn'); // Still get ref for disabling
+    const copyFileBtn = document.getElementById('copyFileBtn');
+    const downloadBtn = document.getElementById('downloadBtn');
     const statusEl = document.getElementById('status');
+    const renderToggle = document.getElementById('renderToggle');
+    const toggleLabel = document.getElementById('toggle-label');
+    const viewToggleContainer = document.getElementById(
+        'view-toggle-container'
+    );
 
     let readmeData = null;
     let decodedContent = '';
+    let isRenderedView = false;
+    let isMarkdownFile = false;
 
     // --- Make download-related buttons permanently disabled ---
     if (copyFileBtn) {
@@ -20,11 +30,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     // --- End of permanent disable ---
 
+    // Initially hide the toggle
+    if (viewToggleContainer) {
+        viewToggleContainer.style.visibility = 'hidden';
+    }
+
     function setStatus(message, isError = false) {
-        if (!statusEl) {
-            console.error('[popup] setStatus: statusEl not found!');
-            return;
-        }
+        if (!statusEl) return;
         statusEl.textContent = message;
         statusEl.classList.remove('success', 'error', 'prominent-error');
 
@@ -33,13 +45,13 @@ document.addEventListener('DOMContentLoaded', () => {
             statusEl.classList.add(statusClass);
 
             if (mainContentEl) {
-                if (isError && mainContentEl.style.display === 'none') {
+                if (
+                    isError &&
+                    (mainContentEl.style.display === 'none' || !isMarkdownFile)
+                ) {
                     statusEl.classList.add('prominent-error');
                 }
             } else if (isError) {
-                console.warn(
-                    '[popup] setStatus: mainContentEl not found when checking for prominent error.'
-                );
                 statusEl.classList.add('prominent-error');
             }
         }
@@ -49,14 +61,75 @@ document.addEventListener('DOMContentLoaded', () => {
         if (copyContentBtn) {
             copyContentBtn.disabled = !contentAvailable;
         }
-        // copyFileBtn and downloadBtn are permanently disabled
+    }
+
+    function updateView() {
+        if (
+            !readmeContentEl ||
+            !readmeRenderedHtmlEl ||
+            !toggleLabel ||
+            !viewToggleContainer
+        ) {
+            return;
+        }
+
+        if (isMarkdownFile && decodedContent) {
+            viewToggleContainer.style.visibility = 'visible';
+            if (isRenderedView) {
+                readmeContentEl.style.display = 'none';
+                readmeRenderedHtmlEl.style.display = 'block';
+                toggleLabel.textContent = 'Rendered HTML';
+                try {
+                    if (
+                        typeof marked === 'object' &&
+                        marked !== null &&
+                        typeof marked.parse === 'function'
+                    ) {
+                        marked.setOptions({
+                            breaks: true,
+                            gfm: true,
+                        });
+                        readmeRenderedHtmlEl.innerHTML =
+                            marked.parse(decodedContent);
+                    } else {
+                        readmeRenderedHtmlEl.textContent =
+                            'Error: Markdown renderer not available.';
+                    }
+                } catch (e) {
+                    console.error('Error rendering Markdown:', e);
+                    readmeRenderedHtmlEl.textContent =
+                        'Error: Could not render Markdown content. Displaying raw text.';
+                    readmeContentEl.style.display = 'block';
+                    readmeRenderedHtmlEl.style.display = 'none';
+                    if (renderToggle) renderToggle.checked = false;
+                    isRenderedView = false;
+                    toggleLabel.textContent = 'Raw Text';
+                }
+            } else {
+                // Raw view
+                readmeContentEl.style.display = 'block';
+                readmeRenderedHtmlEl.style.display = 'none';
+                toggleLabel.textContent = 'Raw Text';
+            }
+        } else {
+            viewToggleContainer.style.visibility = 'hidden';
+            readmeContentEl.style.display = 'block';
+            readmeRenderedHtmlEl.style.display = 'none';
+            if (decodedContent && !isMarkdownFile) {
+                readmeContentEl.textContent = decodedContent;
+            } else if (!decodedContent && readmeContentEl) {
+                readmeContentEl.textContent = 'Loading README...';
+            }
+        }
     }
 
     function showReadmeArea(show) {
-        if (!mainContentEl || !readmeContentEl || !containerEl) {
-            console.error(
-                '[popup] showReadmeArea: Crucial DOM elements missing.'
-            );
+        if (
+            !mainContentEl ||
+            !readmeContentEl ||
+            !containerEl ||
+            !readmeRenderedHtmlEl
+        ) {
             if (statusEl)
                 setStatus('UI Error: Page structure is broken.', true);
             return;
@@ -64,13 +137,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (show) {
             mainContentEl.style.display = 'flex';
-            readmeContentEl.textContent = 'Loading README...';
             containerEl.style.justifyContent = 'flex-start';
             if (statusEl) statusEl.classList.remove('prominent-error');
+            updateView();
         } else {
             mainContentEl.style.display = 'none';
-            readmeContentEl.textContent = '';
+            if (readmeContentEl) readmeContentEl.textContent = '';
+            if (readmeRenderedHtmlEl) readmeRenderedHtmlEl.innerHTML = '';
             containerEl.style.justifyContent = 'center';
+            if (viewToggleContainer)
+                viewToggleContainer.style.visibility = 'hidden';
 
             if (
                 statusEl &&
@@ -83,7 +159,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function fetchReadme(owner, repo) {
-        console.log('[popup] fetchReadme called for', owner, repo);
+        isMarkdownFile = false;
+        if (renderToggle) isRenderedView = renderToggle.checked;
+        else isRenderedView = false;
+
         showReadmeArea(true);
         setStatus('Fetching README...', false);
         enableRelevantButtons(false);
@@ -100,10 +179,25 @@ document.addEventListener('DOMContentLoaded', () => {
                 } else if (response.status === 403) {
                     errorMsg = `Access denied (Error ${response.status}). This could be due to API rate limits or a private repository.`;
                 }
+                readmeData = null;
+                decodedContent = '';
+                isMarkdownFile = false;
                 throw new Error(errorMsg);
             }
             readmeData = await response.json();
             decodedContent = atob(readmeData.content);
+
+            if (
+                readmeData.name &&
+                (readmeData.name.toLowerCase().endsWith('.md') ||
+                    readmeData.name.toLowerCase().endsWith('.markdown'))
+            ) {
+                isMarkdownFile = true;
+            } else {
+                isMarkdownFile = false;
+                isRenderedView = false;
+                if (renderToggle) renderToggle.checked = false;
+            }
 
             if (readmeContentEl) readmeContentEl.textContent = decodedContent;
             if (repoNameEl)
@@ -111,8 +205,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
             setStatus('');
             enableRelevantButtons(true);
+            updateView();
         } catch (error) {
-            console.error('[popup] Error fetching README:', error.message);
             if (repoNameEl) {
                 if (owner && repo) {
                     repoNameEl.textContent = `${owner}/${repo}`;
@@ -120,6 +214,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     repoNameEl.textContent = 'Error';
                 }
             }
+            readmeData = null;
+            decodedContent = '';
+            isMarkdownFile = false;
             showReadmeArea(false);
             setStatus(error.message, true);
             enableRelevantButtons(false);
@@ -127,18 +224,18 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Initial setup
-    console.log('[popup] DOMContentLoaded: Initializing popup.');
     if (
         !mainContentEl ||
         !copyContentBtn ||
         !statusEl ||
         !containerEl ||
         !repoNameEl ||
-        !readmeContentEl
+        !readmeContentEl ||
+        !readmeRenderedHtmlEl ||
+        !renderToggle ||
+        !toggleLabel ||
+        !viewToggleContainer
     ) {
-        console.error(
-            '[popup] CRITICAL: One or more essential DOM elements not found on init. Popup may not function correctly.'
-        );
         if (statusEl)
             statusEl.textContent = 'Error: Popup UI failed to load correctly.';
         return;
@@ -147,8 +244,14 @@ document.addEventListener('DOMContentLoaded', () => {
     showReadmeArea(false);
     enableRelevantButtons(false);
 
+    if (renderToggle) {
+        renderToggle.addEventListener('change', () => {
+            isRenderedView = renderToggle.checked;
+            updateView();
+        });
+    }
+
     browser.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-        console.log('[popup] browser.tabs.query callback executed.');
         const currentTab = tabs[0];
 
         if (!repoNameEl) {
@@ -158,7 +261,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (currentTab && currentTab.url) {
-            console.log('[popup] Current tab URL:', currentTab.url);
             try {
                 const url = new URL(currentTab.url);
                 if (url.hostname === 'github.com') {
@@ -168,17 +270,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (pathParts.length >= 2) {
                         const owner = pathParts[0];
                         const repo = pathParts[1];
-                        console.log(
-                            '[popup] GitHub repo identified:',
-                            owner,
-                            repo
-                        );
                         repoNameEl.textContent = `${owner}/${repo}`;
                         fetchReadme(owner, repo);
                     } else {
-                        console.log(
-                            '[popup] Not a repository page (pathParts < 2).'
-                        );
                         repoNameEl.textContent = 'N/A';
                         setStatus(
                             'Not a repository page. Navigate to a GitHub repo.',
@@ -187,7 +281,6 @@ document.addEventListener('DOMContentLoaded', () => {
                         showReadmeArea(false);
                     }
                 } else {
-                    console.log('[popup] Not a GitHub.com page.');
                     repoNameEl.textContent = 'N/A';
                     setStatus(
                         'This extension only works on GitHub.com repos.',
@@ -196,17 +289,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     showReadmeArea(false);
                 }
             } catch (e) {
-                console.error(
-                    '[popup] Invalid URL:',
-                    currentTab.url,
-                    e.message
-                );
                 repoNameEl.textContent = 'N/A';
                 setStatus('Could not process the current page URL.', true);
                 showReadmeArea(false);
             }
         } else {
-            console.warn('[popup] Could not get current tab or URL.');
             repoNameEl.textContent = 'N/A';
             setStatus('Error accessing tab information.', true);
             showReadmeArea(false);
@@ -221,9 +308,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             try {
                 await navigator.clipboard.writeText(decodedContent);
-                setStatus('README content copied!', false);
+                setStatus('README raw content copied!', false);
             } catch (err) {
-                console.error('Failed to copy content: ', err);
                 setStatus('Failed to copy content.', true);
             }
         });

@@ -39,13 +39,31 @@
                 </button>
             </div>
             <div
+                id="view-toggle-container"
+                style="visibility: hidden"
+            >
+                <label class="toggle-switch">
+                    <input
+                        type="checkbox"
+                        id="renderToggle"
+                    />
+                    <span class="slider"></span>
+                </label>
+                <span id="toggle-label">Raw Text</span>
+            </div>
+            <div
                 id="status"
                 class="status-message"
             ></div>
             <div id="main-content">
                 <pre id="readme-content">Loading README...</pre>
+                <div
+                    id="readme-rendered-html"
+                    style="display: none"
+                ></div>
             </div>
         </div>
+        <script src="marked.min.js"></script>
         <script src="popup.js"></script>
     </body>
 </html>
