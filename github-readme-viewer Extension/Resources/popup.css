@@ -1,3 +1,8 @@
+/*
+    popup.css
+    Directly adapts the main app's Style.css for the Safari Extension popup.
+*/
+
 :root {
     color-scheme: light dark;
 
@@ -16,7 +21,8 @@
     --radius-popup: 16px;
     --radius-button: 10px;
     --radius-content: 8px;
-    --radius-toggle: 18px;
+    --radius-toggle-track: 15px;
+    --radius-toggle-knob: 12px;
     --spacing-base: 12px;
     --popup-width: 420px;
     --popup-max-height: 600px;
@@ -36,9 +42,12 @@
     --status-error-bg-light: rgba(203, 36, 49, 0.08);
     --button-disabled-bg-light: rgba(200, 200, 205, 0.7);
     --button-disabled-text-light: rgba(60, 60, 67, 0.45);
-    --toggle-bg-off-light: rgba(120, 120, 128, 0.16);
+
+    --toggle-bg-off-light: rgba(120, 120, 128, 0.22);
     --toggle-bg-on-light: var(--logo-blue-bright);
-    --toggle-knob-light: #ffffff;
+    --toggle-knob-bg-light: #ffffff;
+    --toggle-knob-shadow-light: 0 1px 2px rgba(0, 0, 0, 0.15),
+        0 0 0 0.5px rgba(0, 0, 0, 0.05);
 
     --container-bg-dark: rgba(28, 28, 30, 0.9);
     --container-border-dark: rgba(255, 255, 255, 0.12);
@@ -55,54 +64,29 @@
     --status-error-bg-dark: rgba(248, 113, 113, 0.1);
     --button-disabled-bg-dark: rgba(70, 70, 73, 0.7);
     --button-disabled-text-dark: rgba(235, 235, 245, 0.45);
-    --toggle-bg-off-dark: rgba(120, 120, 128, 0.32);
+
+    --toggle-bg-off-dark: rgba(120, 120, 128, 0.28);
     --toggle-bg-on-dark: var(--logo-blue-bright);
-    --toggle-knob-dark: #1c1c1e;
+    --toggle-knob-bg-dark: #48484a;
+    --toggle-knob-shadow-dark: 0 1px 2px rgba(0, 0, 0, 0.3),
+        0 0 0 0.5px rgba(0, 0, 0, 0.2);
 }
 
 @media (prefers-color-scheme: light) {
     :root {
-        --current-container-bg: var(--container-bg-light);
-        --current-container-border: var(--container-border-light);
-        --current-text-primary: var(--text-primary-light);
-        --current-text-secondary: var(--text-secondary-light);
-        --current-button-bg: var(--button-bg-light);
-        --current-button-bg-hover: var(--button-bg-hover-light);
-        --current-button-text: var(--button-text-light);
-        --current-button-highlight: var(--button-highlight-light);
-        --current-shadow-color: var(--shadow-color-light);
-        --current-readme-bg: var(--readme-bg-light);
-        --current-status-success: var(--status-success-light);
-        --current-status-error: var(--status-error-light);
-        --current-status-error-bg: var(--status-error-bg-light);
-        --current-button-disabled-bg: var(--button-disabled-bg-light);
-        --current-button-disabled-text: var(--button-disabled-text-light);
         --current-toggle-bg-off: var(--toggle-bg-off-light);
         --current-toggle-bg-on: var(--toggle-bg-on-light);
-        --current-toggle-knob: var(--toggle-knob-light);
+        --current-toggle-knob-bg: var(--toggle-knob-bg-light);
+        --current-toggle-knob-shadow: var(--toggle-knob-shadow-light);
     }
 }
 
 @media (prefers-color-scheme: dark) {
     :root {
-        --current-container-bg: var(--container-bg-dark);
-        --current-container-border: var(--container-border-dark);
-        --current-text-primary: var(--text-primary-dark);
-        --current-text-secondary: var(--text-secondary-dark);
-        --current-button-bg: var(--button-bg-dark);
-        --current-button-bg-hover: var(--button-bg-hover-dark);
-        --current-button-text: var(--button-text-dark);
-        --current-button-highlight: var(--button-highlight-dark);
-        --current-shadow-color: var(--shadow-color-dark);
-        --current-readme-bg: var(--readme-bg-dark);
-        --current-status-success: var(--status-success-dark);
-        --current-status-error: var(--status-error-dark);
-        --current-status-error-bg: var(--status-error-bg-dark);
-        --current-button-disabled-bg: var(--button-disabled-bg-dark);
-        --current-button-disabled-text: var(--button-disabled-text-dark);
         --current-toggle-bg-off: var(--toggle-bg-off-dark);
         --current-toggle-bg-on: var(--toggle-bg-on-dark);
-        --current-toggle-knob: var(--toggle-knob-dark);
+        --current-toggle-knob-bg: var(--toggle-knob-bg-dark);
+        --current-toggle-knob-shadow: var(--toggle-knob-shadow-dark);
     }
 }
 
@@ -245,18 +229,20 @@ button:disabled {
 #view-toggle-container {
     display: flex;
     align-items: center;
-    justify-content: flex-end;
-    gap: calc(var(--spacing-base) * 0.75);
-    padding: calc(var(--spacing-base) * 0.25) 0;
-    margin-bottom: calc(var(--spacing-base) * 0.5);
+    justify-content: center;
+    gap: calc(var(--spacing-base) * 0.8);
+    padding: calc(var(--spacing-base) * 0.5) 0;
+    margin-top: calc(var(--spacing-base) * 0.25);
+    margin-bottom: calc(var(--spacing-base) * 0.75);
     visibility: hidden;
 }
 
 .toggle-switch {
     position: relative;
     display: inline-block;
-    width: 48px;
-    height: 28px;
+    width: 51px;
+    height: 31px;
+    flex-shrink: 0;
 }
 
 .toggle-switch input {
@@ -273,30 +259,32 @@ button:disabled {
     right: 0;
     bottom: 0;
     background-color: var(--current-toggle-bg-off);
-    transition: 0.3s;
-    border-radius: var(--radius-toggle);
-    border: 0.5px solid var(--current-container-border);
+    transition: background-color 0.3s ease-in-out;
+    border-radius: var(--radius-toggle-track);
+
+    box-shadow: inset 0 0.5px 1.5px rgba(0, 0, 0, 0.1);
 }
 
 .slider:before {
     position: absolute;
     content: '';
-    height: 22px;
-    width: 22px;
-    left: 2.5px;
-    bottom: 2.25px;
-    background-color: var(--current-toggle-knob);
-    transition: 0.3s;
-    border-radius: 50%;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    height: 27px;
+    width: 27px;
+    left: 2px;
+    bottom: 2px;
+    background-color: var(--current-toggle-knob-bg);
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    border-radius: var(--radius-toggle-knob);
+    box-shadow: var(--current-toggle-knob-shadow);
 }
 
 input:checked + .slider {
     background-color: var(--current-toggle-bg-on);
 }
 
-input:focus + .slider {
-    box-shadow: 0 0 1px var(--current-toggle-bg-on);
+input:focus-visible + .slider {
+    outline: 2px solid var(--logo-blue-bright);
+    outline-offset: 2px;
 }
 
 input:checked + .slider:before {
@@ -304,8 +292,9 @@ input:checked + .slider:before {
 }
 
 #toggle-label {
-    font-size: 0.9em;
+    font-size: 0.95em;
     color: var(--current-text-secondary);
+    transition: color 0.3s ease-in-out;
 }
 
 .status-message {
