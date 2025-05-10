@@ -194,8 +194,14 @@ document.addEventListener('DOMContentLoaded', () => {
             a.download = readmeData.name || 'README.txt';
             document.body.appendChild(a);
             a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(objectUrl);
+
+            setTimeout(() => {
+                if (document.body.contains(a)) {
+                    document.body.removeChild(a);
+                }
+                URL.revokeObjectURL(objectUrl);
+            }, 150);
+
             setStatus(`${readmeData.name} downloaded!`, false);
         } catch (err) {
             console.error('Failed to download file: ', err);
