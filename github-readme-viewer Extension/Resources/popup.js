@@ -115,7 +115,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 } else {
                     repoNameEl.textContent = 'N/A';
                     setStatus(
-                        'This extension works on GitHub.com pages.',
+                        'This extension only works on GitHub.com repos.',
                         true
                     );
                     showReadmeArea(false);
