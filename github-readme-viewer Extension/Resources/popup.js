@@ -13,16 +13,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function setStatus(message, isError = false) {
         statusEl.textContent = message;
-        statusEl.classList.remove('success', 'error');
+        statusEl.classList.remove('success', 'error', 'prominent-error');
+
         if (message) {
-            statusEl.classList.add(isError ? 'error' : 'success');
+            const statusClass = isError ? 'error' : 'success';
+            statusEl.classList.add(statusClass);
+
+            if (isError && mainContentEl.style.display === 'none') {
+                statusEl.classList.add('prominent-error');
+            }
         }
     }
 
-    function enableButtons() {
-        copyContentBtn.disabled = false;
-        copyFileBtn.disabled = false;
-        downloadBtn.disabled = false;
+    function enableButtons(enable = true) {
+        copyContentBtn.disabled = !enable;
+        copyFileBtn.disabled = !enable;
+        downloadBtn.disabled = !enable;
     }
 
     function showReadmeArea(show) {
@@ -30,27 +36,35 @@ document.addEventListener('DOMContentLoaded', () => {
             mainContentEl.style.display = 'flex';
             readmeContentEl.textContent = 'Loading README...';
             containerEl.style.justifyContent = 'flex-start';
+            statusEl.classList.remove('prominent-error');
         } else {
             mainContentEl.style.display = 'none';
             readmeContentEl.textContent = '';
             containerEl.style.justifyContent = 'center';
+
+            if (statusEl.textContent && statusEl.classList.contains('error')) {
+                statusEl.classList.add('prominent-error');
+            }
         }
     }
 
     async function fetchReadme(owner, repo) {
         showReadmeArea(true);
         setStatus('Fetching README...', false);
+        enableButtons(false);
+
         try {
             const response = await fetch(
                 `https://api.github.com/repos/${owner}/${repo}/readme`
             );
             if (!response.ok) {
+                let errorMsg = `Failed to fetch README. Status: ${response.status}`;
                 if (response.status === 404) {
-                    throw new Error(`README not found for ${owner}/${repo}.`);
+                    errorMsg = `README not found for ${owner}/${repo}.`;
+                } else if (response.status === 403) {
+                    errorMsg = `Access denied (Error ${response.status}). Could be API rate limit or private repo.`;
                 }
-                throw new Error(
-                    `Failed to fetch README. Status: ${response.status}`
-                );
+                throw new Error(errorMsg);
             }
             readmeData = await response.json();
             decodedContent = atob(readmeData.content);
@@ -58,15 +72,23 @@ document.addEventListener('DOMContentLoaded', () => {
             readmeContentEl.textContent = decodedContent;
             repoNameEl.textContent = `${owner}/${repo} (${readmeData.name})`;
             setStatus('');
-            enableButtons();
+            enableButtons(true);
         } catch (error) {
             console.error('Error fetching README:', error);
 
-            readmeContentEl.textContent = 'Could not load README.';
-            repoNameEl.textContent = 'Error';
+            if (owner && repo) {
+                repoNameEl.textContent = `${owner}/${repo}`;
+            } else {
+                repoNameEl.textContent = 'Error';
+            }
+            showReadmeArea(false);
             setStatus(error.message, true);
+            enableButtons(false);
         }
     }
+
+    showReadmeArea(false);
+    enableButtons(false);
 
     browser.tabs.query({ active: true, currentWindow: true }, (tabs) => {
         const currentTab = tabs[0];
