@@ -1,83 +1,289 @@
-body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    width: 400px;
-    min-height: 200px;
-    padding: 10px;
+:root {
+    color-scheme: light dark;
+
+    --system-font: 'SF Pro Display', 'SF Pro Text', -apple-system,
+        BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
+        'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+
+    --logo-blue-bright: #006eff;
+    --logo-blue-dark: #114283;
+    --logo-gray: #4b5563;
+
+    --glass-blur: 25px;
+    --glass-saturate: 170%;
+    --glass-brightness: 1;
+
+    --radius-popup: 16px;
+    --radius-button: 10px;
+    --radius-content: 8px;
+    --spacing-base: 12px;
+    --popup-width: 380px;
+
+    --container-bg-light: rgba(249, 249, 251, 0.9);
+    --container-border-light: rgba(0, 0, 0, 0.1);
+    --text-primary-light: rgba(0, 0, 0, 0.95);
+    --text-secondary-light: rgba(60, 60, 67, 0.8);
+    --button-bg-light: var(--logo-blue-bright);
+    --button-bg-hover-light: #005cbf;
+    --button-text-light: #ffffff;
+    --button-highlight-light: rgba(255, 255, 255, 0.3);
+    --shadow-color-light: rgba(0, 0, 0, 0.15);
+    --readme-bg-light: rgba(255, 255, 255, 0.85);
+    --status-success-light: #28a745;
+    --status-error-light: #cb2431;
+    --button-disabled-bg-light: rgba(200, 200, 205, 0.7);
+    --button-disabled-text-light: rgba(60, 60, 67, 0.45);
+
+    --container-bg-dark: rgba(28, 28, 30, 0.9);
+    --container-border-dark: rgba(255, 255, 255, 0.12);
+    --text-primary-dark: rgba(255, 255, 255, 0.98);
+    --text-secondary-dark: rgba(235, 235, 245, 0.75);
+    --button-bg-dark: var(--logo-blue-bright);
+    --button-bg-hover-dark: #007bff;
+    --button-text-dark: #ffffff;
+    --button-highlight-dark: rgba(255, 255, 255, 0.15);
+    --shadow-color-dark: rgba(0, 0, 0, 0.45);
+    --readme-bg-dark: rgba(38, 38, 40, 0.85);
+    --status-success-dark: #34d399;
+    --status-error-dark: #f87171;
+    --button-disabled-bg-dark: rgba(70, 70, 73, 0.7);
+    --button-disabled-text-dark: rgba(235, 235, 245, 0.45);
+}
+
+@media (prefers-color-scheme: light) {
+    :root {
+        --current-container-bg: var(--container-bg-light);
+        --current-container-border: var(--container-border-light);
+        --current-text-primary: var(--text-primary-light);
+        --current-text-secondary: var(--text-secondary-light);
+        --current-button-bg: var(--button-bg-light);
+        --current-button-bg-hover: var(--button-bg-hover-light);
+        --current-button-text: var(--button-text-light);
+        --current-button-highlight: var(--button-highlight-light);
+        --current-shadow-color: var(--shadow-color-light);
+        --current-readme-bg: var(--readme-bg-light);
+        --current-status-success: var(--status-success-light);
+        --current-status-error: var(--status-error-light);
+        --current-button-disabled-bg: var(--button-disabled-bg-light);
+        --current-button-disabled-text: var(--button-disabled-text-light);
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --current-container-bg: var(--container-bg-dark);
+        --current-container-border: var(--container-border-dark);
+        --current-text-primary: var(--text-primary-dark);
+        --current-text-secondary: var(--text-secondary-dark);
+        --current-button-bg: var(--button-bg-dark);
+        --current-button-bg-hover: var(--button-bg-hover-dark);
+        --current-button-text: var(--button-text-dark);
+        --current-button-highlight: var(--button-highlight-dark);
+        --current-shadow-color: var(--shadow-color-dark);
+        --current-readme-bg: var(--readme-bg-dark);
+        --current-status-success: var(--status-success-dark);
+        --current-status-error: var(--status-error-dark);
+        --current-button-disabled-bg: var(--button-disabled-bg-dark);
+        --current-button-disabled-text: var(--button-disabled-text-dark);
+    }
+}
+
+* {
     box-sizing: border-box;
-    background-color: #f6f8fa;
-    color: #24292e;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+html {
+    color-scheme: light dark;
+    height: 100%;
+}
+
+body {
+    font-family: var(--system-font);
+    font-size: 13px;
+    line-height: 1.4;
+    width: var(--popup-width);
+    max-height: 580px;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    background-color: transparent;
+    overflow: hidden;
 }
 
 #container {
+    width: 100%;
+    height: 100%;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+
+    gap: calc(var(--spacing-base) * 1.25);
+    padding: calc(var(--spacing-base) * 1.5);
+
+    background-color: var(--current-container-bg);
+    backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate))
+        brightness(var(--glass-brightness));
+    -webkit-backdrop-filter: blur(var(--glass-blur))
+        saturate(var(--glass-saturate)) brightness(var(--glass-brightness));
+    border-radius: var(--radius-popup);
+    border: 0.5px solid var(--current-container-border);
+
+    box-shadow: 0 20px 40px -10px var(--current-shadow-color),
+        0 0 0 0.5px var(--current-container-border),
+        inset 0 0.5px 0px hsla(0, 0%, 100%, 0.15),
+        inset 0 -0.5px 0px hsla(0, 0%, 0%, 0.03);
+
+    color: var(--current-text-secondary);
+    overflow-y: auto;
+}
+
+@media (prefers-color-scheme: dark) {
+    #container {
+        box-shadow: 0 20px 40px -10px var(--current-shadow-color),
+            0 0 0 0.5px var(--current-container-border),
+            inset 0 0.5px 0px hsla(0, 0%, 100%, 0.07);
+    }
 }
 
 h1 {
-    font-size: 18px;
-    margin-top: 0;
+    font-size: 1.5em;
+    font-weight: 600;
+    color: var(--current-text-primary);
+    margin: 0;
+    padding: calc(var(--spacing-base) * 0.25) 0;
     text-align: center;
-    color: #0366d6;
+    letter-spacing: -0.015em;
+}
+
+#repo-info {
+    text-align: center;
+    font-size: 0.95em;
+    line-height: 1.35;
 }
 
 #repo-info p {
-    margin: 5px 0;
-    font-size: 12px;
+    margin: 2px 0;
 }
 
 #repo-info #repo-name {
-    font-weight: bold;
+    font-weight: 500;
+    color: var(--current-text-primary);
 }
 
 #actions {
     display: flex;
-    justify-content: space-around;
-    gap: 5px;
+    gap: calc(var(--spacing-base) * 0.75);
 }
 
 button {
-    padding: 8px 12px;
-    background-color: #2ea44f;
-    color: white;
+    flex: 1 1 0px;
+    padding: calc(var(--spacing-base) * 0.9) calc(var(--spacing-base) * 1.8);
+    background-color: var(--current-button-bg);
+    color: var(--current-button-text);
     border: none;
-    border-radius: 6px;
+    border-radius: var(--radius-button);
+    font-size: 1em;
+    font-weight: 500;
+    letter-spacing: -0.01em;
     cursor: pointer;
-    font-size: 12px;
-    transition: background-color 0.2s;
-}
+    transition: background-color 0.15s ease-out, transform 0.12s ease-out,
+        box-shadow 0.15s ease-out;
+    text-align: center;
+    white-space: nowrap;
 
-button:disabled {
-    background-color: #94d3a2;
-    cursor: not-allowed;
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.04),
+        0 4px 8px -2px var(--current-shadow-color),
+        inset 0 1px 0 var(--current-button-highlight);
 }
 
 button:hover:not(:disabled) {
-    background-color: #2c974b;
+    background-color: var(--current-button-bg-hover);
+    transform: translateY(-2px) scale(1.015);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05),
+        0 6px 12px -2px var(--current-shadow-color),
+        inset 0 1px 0 var(--current-button-highlight);
 }
 
-#copyFileBtn {
-    background-color: #0366d6; /* Blue for a slightly different action */
-}
-#copyFileBtn:hover:not(:disabled) {
-    background-color: #005cc5;
+button:active:not(:disabled) {
+    transform: translateY(0px) scale(0.98);
+    background-color: var(--current-button-bg);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06),
+        0 2px 4px -1px var(--current-shadow-color),
+        inset 0 1px 0px var(--current-button-highlight);
 }
 
+button:disabled {
+    background-color: var(--current-button-disabled-bg);
+    color: var(--current-button-disabled-text);
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+}
 
-#status {
-    font-size: 12px;
-    color: #cb2431; /* Error color */
-    min-height: 1.5em; /* Reserve space */
+.status-message {
+    font-size: 0.9em;
+    text-align: center;
+    padding: calc(var(--spacing-base) * 0.4) 0;
+    min-height: 1.4em;
+    line-height: 1.3;
+    font-weight: 500;
+}
+
+.status-message.success {
+    color: var(--current-status-success);
+}
+.status-message.error {
+    color: var(--current-status-error);
+}
+
+#main-content {
+    flex-grow: 1;
+    display: flex;
+    min-height: 0;
 }
 
 #readme-content {
-    background-color: #ffffff;
-    border: 1px solid #e1e4e8;
-    padding: 10px;
-    max-height: 300px;
-    overflow-y: auto;
-    white-space: pre-wrap; /* Handle long lines */
-    word-wrap: break-word;
-    font-size: 12px;
+    flex-grow: 1;
+    background-color: var(--current-readme-bg);
+    border: 0.5px solid var(--current-container-border);
+    padding: var(--spacing-base);
+    border-radius: var(--radius-content);
+    font-family: 'SF Mono', Menlo, Monaco, Consolas, 'Liberation Mono',
+        'Courier New', monospace;
+    font-size: 11px;
     line-height: 1.5;
+    color: var(--current-text-primary);
+    overflow: auto;
+    white-space: pre-wrap;
+    word-break: break-word;
+    min-height: 80px;
+    margin: 0;
+}
+
+#container::-webkit-scrollbar,
+#readme-content::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+}
+
+#container::-webkit-scrollbar-track,
+#readme-content::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+#container::-webkit-scrollbar-thumb,
+#readme-content::-webkit-scrollbar-thumb {
+    background-color: var(--logo-gray);
+    border-radius: 6px;
+    border: 3px solid transparent;
+    background-clip: content-box;
+}
+
+#container::-webkit-scrollbar-thumb:hover,
+#readme-content::-webkit-scrollbar-thumb:hover {
+    background-color: var(--logo-blue-dark);
 }
