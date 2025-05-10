@@ -1,39 +1,29 @@
 document.addEventListener('DOMContentLoaded', () => {
     const containerEl = document.getElementById('container');
     const repoNameEl = document.getElementById('repo-name');
-    const readmeContentEl = document.getElementById('readme-content'); // Raw text view <pre>
+    const readmeContentEl = document.getElementById('readme-content');
     const readmeRenderedHtmlEl = document.getElementById(
         'readme-rendered-html'
-    ); // Rendered HTML view <div>
+    );
     const mainContentEl = document.getElementById('main-content');
     const copyContentBtn = document.getElementById('copyContentBtn');
     const copyFileBtn = document.getElementById('copyFileBtn');
     const downloadBtn = document.getElementById('downloadBtn');
     const statusEl = document.getElementById('status');
     const renderToggle = document.getElementById('renderToggle');
-    const toggleLabel = document.getElementById('toggle-label');
-    const viewToggleContainer = document.getElementById(
-        'view-toggle-container'
-    );
+    const viewToggleBar = document.getElementById('view-toggle-bar');
+    const contentSeparator = document.getElementById('content-separator');
 
     let readmeData = null;
     let decodedContent = '';
     let isRenderedView = false;
     let isMarkdownFile = false;
 
-    // --- Make download-related buttons permanently disabled ---
-    if (copyFileBtn) {
-        copyFileBtn.disabled = true;
-    }
-    if (downloadBtn) {
-        downloadBtn.disabled = true;
-    }
-    // --- End of permanent disable ---
+    if (copyFileBtn) copyFileBtn.disabled = true;
+    if (downloadBtn) downloadBtn.disabled = true;
 
-    // Initially hide the toggle
-    if (viewToggleContainer) {
-        viewToggleContainer.style.visibility = 'hidden';
-    }
+    if (viewToggleBar) viewToggleBar.style.visibility = 'hidden';
+    if (contentSeparator) contentSeparator.style.visibility = 'hidden';
 
     function setStatus(message, isError = false) {
         if (!statusEl) return;
@@ -58,27 +48,26 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function enableRelevantButtons(contentAvailable = false) {
-        if (copyContentBtn) {
-            copyContentBtn.disabled = !contentAvailable;
-        }
+        if (copyContentBtn) copyContentBtn.disabled = !contentAvailable;
     }
 
     function updateView() {
         if (
             !readmeContentEl ||
             !readmeRenderedHtmlEl ||
-            !toggleLabel ||
-            !viewToggleContainer
+            !viewToggleBar ||
+            !contentSeparator
         ) {
             return;
         }
 
         if (isMarkdownFile && decodedContent) {
-            viewToggleContainer.style.visibility = 'visible';
+            viewToggleBar.style.visibility = 'visible';
+            contentSeparator.style.visibility = 'visible';
+
             if (isRenderedView) {
                 readmeContentEl.style.display = 'none';
                 readmeRenderedHtmlEl.style.display = 'block';
-                toggleLabel.textContent = 'Rendered HTML';
                 try {
                     if (
                         typeof marked === 'object' &&
@@ -103,16 +92,15 @@ document.addEventListener('DOMContentLoaded', () => {
                     readmeRenderedHtmlEl.style.display = 'none';
                     if (renderToggle) renderToggle.checked = false;
                     isRenderedView = false;
-                    toggleLabel.textContent = 'Raw Text';
                 }
             } else {
                 // Raw view
                 readmeContentEl.style.display = 'block';
                 readmeRenderedHtmlEl.style.display = 'none';
-                toggleLabel.textContent = 'Raw Text';
             }
         } else {
-            viewToggleContainer.style.visibility = 'hidden';
+            viewToggleBar.style.visibility = 'hidden';
+            contentSeparator.style.visibility = 'hidden';
             readmeContentEl.style.display = 'block';
             readmeRenderedHtmlEl.style.display = 'none';
             if (decodedContent && !isMarkdownFile) {
@@ -128,7 +116,9 @@ document.addEventListener('DOMContentLoaded', () => {
             !mainContentEl ||
             !readmeContentEl ||
             !containerEl ||
-            !readmeRenderedHtmlEl
+            !readmeRenderedHtmlEl ||
+            !viewToggleBar ||
+            !contentSeparator
         ) {
             if (statusEl)
                 setStatus('UI Error: Page structure is broken.', true);
@@ -139,14 +129,13 @@ document.addEventListener('DOMContentLoaded', () => {
             mainContentEl.style.display = 'flex';
             containerEl.style.justifyContent = 'flex-start';
             if (statusEl) statusEl.classList.remove('prominent-error');
-            updateView();
         } else {
             mainContentEl.style.display = 'none';
             if (readmeContentEl) readmeContentEl.textContent = '';
             if (readmeRenderedHtmlEl) readmeRenderedHtmlEl.innerHTML = '';
             containerEl.style.justifyContent = 'center';
-            if (viewToggleContainer)
-                viewToggleContainer.style.visibility = 'hidden';
+            viewToggleBar.style.visibility = 'hidden';
+            contentSeparator.style.visibility = 'hidden';
 
             if (
                 statusEl &&
@@ -156,6 +145,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 statusEl.classList.add('prominent-error');
             }
         }
+        updateView(); // Call updateView to set initial state of toggle visibility and content
     }
 
     async function fetchReadme(owner, repo) {
@@ -163,7 +153,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (renderToggle) isRenderedView = renderToggle.checked;
         else isRenderedView = false;
 
-        showReadmeArea(true);
+        showReadmeArea(true); // This will call updateView internally
         setStatus('Fetching README...', false);
         enableRelevantButtons(false);
 
@@ -217,27 +207,48 @@ document.addEventListener('DOMContentLoaded', () => {
             readmeData = null;
             decodedContent = '';
             isMarkdownFile = false;
-            showReadmeArea(false);
+            showReadmeArea(false); // This will call updateView to hide toggle etc.
             setStatus(error.message, true);
             enableRelevantButtons(false);
         }
     }
 
     // Initial setup
-    if (
-        !mainContentEl ||
-        !copyContentBtn ||
-        !statusEl ||
-        !containerEl ||
-        !repoNameEl ||
-        !readmeContentEl ||
-        !readmeRenderedHtmlEl ||
-        !renderToggle ||
-        !toggleLabel ||
-        !viewToggleContainer
-    ) {
+    const essentialElements = [
+        mainContentEl,
+        copyContentBtn,
+        statusEl,
+        containerEl,
+        repoNameEl,
+        readmeContentEl,
+        readmeRenderedHtmlEl,
+        renderToggle,
+        viewToggleBar,
+        contentSeparator,
+    ];
+    if (essentialElements.some((el) => !el)) {
         if (statusEl)
             statusEl.textContent = 'Error: Popup UI failed to load correctly.';
+
+        essentialElements.forEach((el, index) => {
+            if (!el)
+                console.error(
+                    `Essential element at index ${index} (${
+                        [
+                            'mainContentEl',
+                            'copyContentBtn',
+                            'statusEl',
+                            'containerEl',
+                            'repoNameEl',
+                            'readmeContentEl',
+                            'readmeRenderedHtmlEl',
+                            'renderToggle',
+                            /*"toggleLabel",*/ 'viewToggleBar',
+                            'contentSeparator',
+                        ][index]
+                    }) is missing.`
+                );
+        });
         return;
     }
 

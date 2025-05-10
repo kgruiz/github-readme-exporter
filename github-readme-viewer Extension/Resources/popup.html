@@ -11,7 +11,9 @@
     </head>
     <body>
         <div id="container">
-            <h1>GitHub README Exporter</h1>
+            <div id="header-controls">
+                <h1>GitHub README Exporter</h1>
+            </div>
             <div id="repo-info">
                 <p>Repo: <span id="repo-name">Loading...</span></p>
             </div>
@@ -38,10 +40,12 @@
                     Download
                 </button>
             </div>
+
             <div
-                id="view-toggle-container"
+                id="view-toggle-bar"
                 style="visibility: hidden"
             >
+                <span id="toggle-bar-label">Render Content</span>
                 <label class="toggle-switch">
                     <input
                         type="checkbox"
@@ -49,8 +53,13 @@
                     />
                     <span class="slider"></span>
                 </label>
-                <span id="toggle-label">Raw Text</span>
             </div>
+
+            <hr
+                id="content-separator"
+                style="visibility: hidden"
+            />
+
             <div
                 id="status"
                 class="status-message"
