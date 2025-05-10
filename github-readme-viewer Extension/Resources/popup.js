@@ -189,23 +189,42 @@ document.addEventListener('DOMContentLoaded', () => {
                 type: 'text/plain;charset=utf-8',
             });
             const objectUrl = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = objectUrl;
-            a.download = readmeData.name || 'README.txt';
-            document.body.appendChild(a);
-            a.click();
 
-            setTimeout(() => {
-                if (document.body.contains(a)) {
-                    document.body.removeChild(a);
-                }
+            const iframe = document.createElement('iframe');
+            iframe.style.display = 'none';
+            iframe.src = 'download-iframe.html';
+
+            iframe.onload = () => {
+                const targetOrigin = new URL(iframe.src, window.location.origin)
+                    .origin;
+
+                iframe.contentWindow.postMessage(
+                    {
+                        type: 'initiateDownload',
+                        filename: readmeData.name || 'README.txt',
+                        uri: objectUrl,
+                    },
+                    targetOrigin
+                );
+
+                setStatus(`${readmeData.name} download initiated.`, false);
+
+                setTimeout(() => {
+                    document.body.removeChild(iframe);
+                    URL.revokeObjectURL(objectUrl);
+                }, 1000);
+            };
+
+            iframe.onerror = () => {
+                console.error('Failed to load download iframe.');
+                setStatus('Download helper failed to load.', true);
                 URL.revokeObjectURL(objectUrl);
-            }, 150);
+            };
 
-            setStatus(`${readmeData.name} downloaded!`, false);
+            document.body.appendChild(iframe);
         } catch (err) {
-            console.error('Failed to download file: ', err);
-            setStatus('Failed to download file.', true);
+            console.error('Error preparing download iframe: ', err);
+            setStatus('Error setting up download.', true);
         }
     });
 });
