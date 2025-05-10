@@ -57,12 +57,13 @@ document.addEventListener('DOMContentLoaded', () => {
             const response = await fetch(
                 `https://api.github.com/repos/${owner}/${repo}/readme`
             );
+
             if (!response.ok) {
                 let errorMsg = `Failed to fetch README. Status: ${response.status}`;
                 if (response.status === 404) {
-                    errorMsg = `README not found for ${owner}/${repo}.`;
+                    errorMsg = `README not found. This might be a private repository or the README doesn't exist.`;
                 } else if (response.status === 403) {
-                    errorMsg = `Access denied (Error ${response.status}). Could be API rate limit or private repo.`;
+                    errorMsg = `Access denied (Error ${response.status}). This could be due to API rate limits or a private repository.`;
                 }
                 throw new Error(errorMsg);
             }
@@ -75,7 +76,6 @@ document.addEventListener('DOMContentLoaded', () => {
             enableButtons(true);
         } catch (error) {
             console.error('Error fetching README:', error);
-
             if (owner && repo) {
                 repoNameEl.textContent = `${owner}/${repo}`;
             } else {
