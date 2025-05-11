@@ -333,16 +333,17 @@ input:checked + .slider:before {
 
 .section-separator {
     border: none;
-    height: 1px;
+    height: 2.5px;
     background-image: linear-gradient(
         to right,
         transparent,
-        var(--current-hr-color) 25%,
-        var(--current-hr-color) 75%,
+        var(--current-hr-color) 20%,
+
+        80%,
         transparent
     );
-    opacity: 0.4;
-    margin: calc(var(--spacing-base) * 0.25) 0;
+    opacity: 0.65;
+    margin: calc(var(--spacing-base) * 0.85) 0;
     visibility: hidden;
 }
 
