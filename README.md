@@ -14,9 +14,15 @@ A lightweight Safari Web Extension for macOS that streamlines the extraction, co
 
 ## Demo
 
-<!-- <div align="center">
-<!-- *(Insert a polished demo GIF or screenshot here, 700 px wide with rounded corners and subtle shadow.)* -->
-<!-- </div> -->
+<div align="center">
+  <img src="examples/exit-vim-no-render.png" width="700" style="border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.15);" alt="Raw Markdown view" />
+  <p><em>Unrendered Markdown view</em></p>
+
+  <br/>
+
+  <img src="examples/nord-render-2.png" width="700" style="border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.15);" alt="Rendered Markdown view" />
+  <p><em>Rendered Markdown view</em></p>
+</div>
 
 --- --
 
