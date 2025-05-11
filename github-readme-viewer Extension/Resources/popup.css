@@ -25,7 +25,7 @@
     --radius-toggle-knob: 12.5px;
     --radius-toggle-bar: var(--radius-interactive);
     --spacing-base: 10px;
-    --popup-width: 400px;
+    --popup-width: 500px;
     --popup-max-height: 600px;
 
     --bg-popup-light: rgba(249, 249, 251, 0.85);
@@ -231,7 +231,12 @@ button {
         box-shadow 0.15s ease;
     box-shadow: 0 2px 3px rgba(0, 0, 0, 0.08),
         hsla(0, 0%, 100%, var(--current-highlight-opacity));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
 }
+
 button:hover:not(:disabled) {
     background-color: var(--current-interactive-hover-bg);
     transform: translateY(-1.5px) scale(1.01);
