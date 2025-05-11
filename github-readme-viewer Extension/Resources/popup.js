@@ -40,7 +40,11 @@ document.addEventListener('DOMContentLoaded', () => {
             statusEl.classList.add(statusClass);
 
             if (mainContentEl) {
-                if (
+                if (!isError) {
+                    setTimeout(() => {
+                        statusEl.textContent = '';
+                    }, 2000);
+                } else if (
                     isError &&
                     (mainContentEl.style.display === 'none' || !isMarkdownFile)
                 ) {
