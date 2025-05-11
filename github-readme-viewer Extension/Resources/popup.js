@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const downloadBtn = document.getElementById('downloadBtn');
     const statusEl = document.getElementById('status');
     const renderToggle = document.getElementById('renderToggle');
+    const viewToggleSectionEl = document.getElementById('view-toggle-section');
     const viewToggleBar = document.getElementById('view-toggle-bar');
     const topSeparator = document.querySelector(
         '.section-separator.top-separator'
@@ -27,9 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (copyFileBtn) copyFileBtn.disabled = true;
     if (downloadBtn) downloadBtn.disabled = true;
 
-    if (viewToggleBar) viewToggleBar.style.visibility = 'hidden';
-    if (topSeparator) topSeparator.style.visibility = 'hidden';
-    if (bottomSeparator) bottomSeparator.style.visibility = 'hidden';
+    if (viewToggleSectionEl) viewToggleSectionEl.style.display = 'none';
 
     function setStatus(message, isError = false) {
         if (!statusEl) return;
@@ -61,14 +60,17 @@ document.addEventListener('DOMContentLoaded', () => {
         if (
             !readmeContentEl ||
             !readmeRenderedHtmlEl ||
+            !viewToggleSectionEl ||
             !viewToggleBar ||
             !topSeparator ||
-            !bottomSeparator
+            !bottomSeparator ||
+            !renderToggle
         ) {
             return;
         }
 
         if (isMarkdownFile && decodedContent) {
+            viewToggleSectionEl.style.display = 'block';
             viewToggleBar.style.visibility = 'visible';
             topSeparator.style.visibility = 'visible';
             bottomSeparator.style.visibility = 'visible';
@@ -107,9 +109,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 readmeRenderedHtmlEl.style.display = 'none';
             }
         } else {
-            viewToggleBar.style.visibility = 'hidden';
-            topSeparator.style.visibility = 'hidden';
-            bottomSeparator.style.visibility = 'hidden';
+            viewToggleSectionEl.style.display = 'none';
+
             readmeContentEl.style.display = 'block';
             readmeRenderedHtmlEl.style.display = 'none';
             if (decodedContent && !isMarkdownFile) {
@@ -121,7 +122,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function showReadmeArea(show) {
-        // Simplified this function as updateView handles most of the conditional UI for toggle bar and content
         if (!mainContentEl || !containerEl) {
             if (statusEl)
                 setStatus('UI Error: Page structure is broken.', true);
@@ -138,7 +138,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (readmeRenderedHtmlEl) readmeRenderedHtmlEl.innerHTML = '';
             containerEl.style.justifyContent = 'center';
         }
-        updateView(); // Call updateView to set initial state of toggle visibility and content
+        updateView();
     }
 
     async function fetchReadme(owner, repo) {
@@ -203,10 +203,10 @@ document.addEventListener('DOMContentLoaded', () => {
             showReadmeArea(false);
             setStatus(error.message, true);
             enableRelevantButtons(false);
+            updateView(); // Ensure view is updated on error too
         }
     }
 
-    // Initial setup: Check all elements that are now part of the layout
     const essentialElements = [
         mainContentEl,
         copyContentBtn,
@@ -216,6 +216,7 @@ document.addEventListener('DOMContentLoaded', () => {
         readmeContentEl,
         readmeRenderedHtmlEl,
         renderToggle,
+        viewToggleSectionEl,
         viewToggleBar,
         topSeparator,
         bottomSeparator,
@@ -224,7 +225,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (statusEl)
             statusEl.textContent = 'Error: Popup UI failed to load correctly.';
         essentialElements.forEach((el, index) => {
-            // Log which one is missing
             if (!el)
                 console.error(
                     `Essential element missing: ${
@@ -237,6 +237,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             'readmeContentEl',
                             'readmeRenderedHtmlEl',
                             'renderToggle',
+                            'viewToggleSectionEl',
                             'viewToggleBar',
                             'topSeparator',
                             'bottomSeparator',
