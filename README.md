@@ -1,5 +1,7 @@
 <div align="center">
 
+<img src="github-readme-viewer/Resources/Icon.png" alt="GitHub README Exporter Icon" width="150"/>
+
 <h1>GitHub README Exporter</h1>
 
 A lightweight Safari Web Extension for macOS that streamlines the extraction, copying, and rendering of GitHub README files. Designed for seamless integration into AI workflows, summarization pipelines, or rapid developer reference.
@@ -13,10 +15,10 @@ A lightweight Safari Web Extension for macOS that streamlines the extraction, co
 ## Demo
 
 <!-- <div align="center">
-*(Insert a polished demo GIF or screenshot here, 700 px wide with rounded corners and subtle shadow.)*
-</div>
+<!-- *(Insert a polished demo GIF or screenshot here, 700 px wide with rounded corners and subtle shadow.)* -->
+<!-- </div> -->
 
---- -->
+--- --
 
 ## Features
 
