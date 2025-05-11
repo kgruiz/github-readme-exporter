@@ -12,7 +12,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const statusEl = document.getElementById('status');
     const renderToggle = document.getElementById('renderToggle');
     const viewToggleBar = document.getElementById('view-toggle-bar');
-    const contentSeparator = document.getElementById('content-separator');
+    const topSeparator = document.querySelector(
+        '.section-separator.top-separator'
+    );
+    const bottomSeparator = document.querySelector(
+        '.section-separator.bottom-separator'
+    );
 
     let readmeData = null;
     let decodedContent = '';
@@ -23,7 +28,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (downloadBtn) downloadBtn.disabled = true;
 
     if (viewToggleBar) viewToggleBar.style.visibility = 'hidden';
-    if (contentSeparator) contentSeparator.style.visibility = 'hidden';
+    if (topSeparator) topSeparator.style.visibility = 'hidden';
+    if (bottomSeparator) bottomSeparator.style.visibility = 'hidden';
 
     function setStatus(message, isError = false) {
         if (!statusEl) return;
@@ -56,14 +62,16 @@ document.addEventListener('DOMContentLoaded', () => {
             !readmeContentEl ||
             !readmeRenderedHtmlEl ||
             !viewToggleBar ||
-            !contentSeparator
+            !topSeparator ||
+            !bottomSeparator
         ) {
             return;
         }
 
         if (isMarkdownFile && decodedContent) {
             viewToggleBar.style.visibility = 'visible';
-            contentSeparator.style.visibility = 'visible';
+            topSeparator.style.visibility = 'visible';
+            bottomSeparator.style.visibility = 'visible';
 
             if (isRenderedView) {
                 readmeContentEl.style.display = 'none';
@@ -100,7 +108,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         } else {
             viewToggleBar.style.visibility = 'hidden';
-            contentSeparator.style.visibility = 'hidden';
+            topSeparator.style.visibility = 'hidden';
+            bottomSeparator.style.visibility = 'hidden';
             readmeContentEl.style.display = 'block';
             readmeRenderedHtmlEl.style.display = 'none';
             if (decodedContent && !isMarkdownFile) {
@@ -112,14 +121,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function showReadmeArea(show) {
-        if (
-            !mainContentEl ||
-            !readmeContentEl ||
-            !containerEl ||
-            !readmeRenderedHtmlEl ||
-            !viewToggleBar ||
-            !contentSeparator
-        ) {
+        // Simplified this function as updateView handles most of the conditional UI for toggle bar and content
+        if (!mainContentEl || !containerEl) {
             if (statusEl)
                 setStatus('UI Error: Page structure is broken.', true);
             return;
@@ -134,16 +137,6 @@ document.addEventListener('DOMContentLoaded', () => {
             if (readmeContentEl) readmeContentEl.textContent = '';
             if (readmeRenderedHtmlEl) readmeRenderedHtmlEl.innerHTML = '';
             containerEl.style.justifyContent = 'center';
-            viewToggleBar.style.visibility = 'hidden';
-            contentSeparator.style.visibility = 'hidden';
-
-            if (
-                statusEl &&
-                statusEl.textContent &&
-                statusEl.classList.contains('error')
-            ) {
-                statusEl.classList.add('prominent-error');
-            }
         }
         updateView(); // Call updateView to set initial state of toggle visibility and content
     }
@@ -153,7 +146,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (renderToggle) isRenderedView = renderToggle.checked;
         else isRenderedView = false;
 
-        showReadmeArea(true); // This will call updateView internally
+        showReadmeArea(true);
         setStatus('Fetching README...', false);
         enableRelevantButtons(false);
 
@@ -207,13 +200,13 @@ document.addEventListener('DOMContentLoaded', () => {
             readmeData = null;
             decodedContent = '';
             isMarkdownFile = false;
-            showReadmeArea(false); // This will call updateView to hide toggle etc.
+            showReadmeArea(false);
             setStatus(error.message, true);
             enableRelevantButtons(false);
         }
     }
 
-    // Initial setup
+    // Initial setup: Check all elements that are now part of the layout
     const essentialElements = [
         mainContentEl,
         copyContentBtn,
@@ -224,16 +217,17 @@ document.addEventListener('DOMContentLoaded', () => {
         readmeRenderedHtmlEl,
         renderToggle,
         viewToggleBar,
-        contentSeparator,
+        topSeparator,
+        bottomSeparator,
     ];
     if (essentialElements.some((el) => !el)) {
         if (statusEl)
             statusEl.textContent = 'Error: Popup UI failed to load correctly.';
-
         essentialElements.forEach((el, index) => {
+            // Log which one is missing
             if (!el)
                 console.error(
-                    `Essential element at index ${index} (${
+                    `Essential element missing: ${
                         [
                             'mainContentEl',
                             'copyContentBtn',
@@ -243,10 +237,11 @@ document.addEventListener('DOMContentLoaded', () => {
                             'readmeContentEl',
                             'readmeRenderedHtmlEl',
                             'renderToggle',
-                            /*"toggleLabel",*/ 'viewToggleBar',
-                            'contentSeparator',
+                            'viewToggleBar',
+                            'topSeparator',
+                            'bottomSeparator',
                         ][index]
-                    }) is missing.`
+                    }`
                 );
         });
         return;
@@ -325,7 +320,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
-
     // --- copyFileBtn event listener commented out ---
     /*
     if(copyFileBtn) {

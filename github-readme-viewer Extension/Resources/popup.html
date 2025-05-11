@@ -11,12 +11,12 @@
     </head>
     <body>
         <div id="container">
-            <div id="header-controls">
-                <h1>GitHub README Exporter</h1>
-            </div>
+            <h1>GitHub README Exporter</h1>
+
             <div id="repo-info">
                 <p>Repo: <span id="repo-name">Loading...</span></p>
             </div>
+
             <div id="actions">
                 <button
                     id="copyContentBtn"
@@ -42,28 +42,28 @@
             </div>
 
             <div
-                id="view-toggle-bar"
+                id="view-toggle-section"
                 style="visibility: hidden"
             >
-                <span id="toggle-bar-label">Render Content</span>
-                <label class="toggle-switch">
-                    <input
-                        type="checkbox"
-                        id="renderToggle"
-                    />
-                    <span class="slider"></span>
-                </label>
+                <hr class="section-separator top-separator" />
+                <div id="view-toggle-bar">
+                    <span id="toggle-bar-label">Render Content</span>
+                    <label class="toggle-switch">
+                        <input
+                            type="checkbox"
+                            id="renderToggle"
+                        />
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <hr class="section-separator bottom-separator" />
             </div>
-
-            <hr
-                id="content-separator"
-                style="visibility: hidden"
-            />
 
             <div
                 id="status"
                 class="status-message"
             ></div>
+
             <div id="main-content">
                 <pre id="readme-content">Loading README...</pre>
                 <div
